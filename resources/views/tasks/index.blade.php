@@ -5,20 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>todoApp</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <header>
-    <h1 class="title">カテゴリ</h1>
+    <nav class="my-navbar">
+      <a class="my-navbar-brand" href="/">ToDo App</a>
+    </nav>
   </header>
-  <section id="todo">
-    <ul class="list">
-      @foreach ($folders as $folder)
-          <li class="listItem">
-            <p class="listItem__index">{{ $folder->id }}</p>
-            <p class="listItem__name">{{ $folder->title }}</p>
-          </li>
-      @endforeach
-    </ul>
-  </section>
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col col-md-4">
+          <nav class="panel panel-default">
+            <div class="panel-heading">フォルダ</div>
+            <div class="panel-body">
+              <a href="#" class="btn btn-default btn-block">
+                フォルダを追加する
+              </a>
+            </div>
+            <div class="list-group">
+              @foreach($folders as $folder)
+                <a href="{{ route('tasks.index', ['id' => $folder->id]) }}" class="list-group-item">
+                  {{ $folder->title }}
+                </a>
+              @endforeach
+            </div>
+          </nav>
+        </div>
+        <div class="column col-md-8">
+          <!-- ここにタスクが表示される -->
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
