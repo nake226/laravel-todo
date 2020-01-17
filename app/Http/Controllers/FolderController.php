@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Folder;
+use App\Http\Requests\createFolder;
 use Illuminate\Http\Request;
 
 class FolderController extends Controller
@@ -15,7 +16,7 @@ class FolderController extends Controller
     /**
      * フォルダの作成、保存をした後にタスク一覧へリダイレクト
      */
-    public function create(Request $request)
+    public function create(createFolder $request)
     {
         // フォルダのインスタンス作成
         $folder = new Folder();
