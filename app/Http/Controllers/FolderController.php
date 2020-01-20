@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Folder;
 use App\Http\Requests\createFolder;
-use Illuminate\Http\Request;
 
 class FolderController extends Controller
 {
