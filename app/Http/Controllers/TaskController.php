@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Folder;
 use App\Task;
-use App\Http\Requests\createTask;
+use App\Http\Requests\CreateTask;
+use App\Http\Requests\EditTask;
 
 class TaskController extends Controller
 {
@@ -40,7 +41,7 @@ class TaskController extends Controller
     /**
      * タスクの作成、保存をした後にタスク一覧へリダイレクト
      */
-    public function create(int $id, createTask $request)
+    public function create(int $id, CreateTask $request)
     {
         // 現在のフォルダー
         $current_folder = Folder::find($id);
@@ -59,7 +60,7 @@ class TaskController extends Controller
     }
 
     /**
-     * タスクの編集
+     * タスク編集画面への遷移
      */
     public function showEditForm(int $task_id)
     {
@@ -67,6 +68,25 @@ class TaskController extends Controller
 
         return view('tasks/edit', [
             'task' => $task,
+        ]);
+    }
+
+    /**
+     * タスク編集後、更新
+     */
+    public function edit(int $task_id, EditTask $request)
+    {
+        // 更新するタスク
+        $task = Task::find($task_id);
+
+        // タスクの保存
+        $task->title = $request->title;
+        $task->status = $request->status;
+        $task->due_date = $request->due_date;
+        $task->save();
+
+        return redirect()->route('tasks.index', [
+            'id' => $task->folder_id,
         ]);
     }
 }
