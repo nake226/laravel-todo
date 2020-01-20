@@ -25,13 +25,15 @@ class createTask extends FormRequest
     {
         return [
             'title' => 'required|max:100',
+            'due_date' => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'title' => 'タスク名'
+            'title' => 'タスク名',
+            'due_date' => '期限',
         ];
     }
 }
