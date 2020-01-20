@@ -35,6 +35,7 @@
                   @foreach(\App\Task::STATUS as $key => $val)
                     <option
                         value="{{ $key }}"
+                        {{-- 現在の状態にチェックを付ける --}}
                         {{ $key == old('status', $task->status) ? 'selected' : '' }}
                     >
                       {{ $val['label'] }}
