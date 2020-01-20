@@ -40,21 +40,21 @@ class TaskController extends Controller
     /**
      * タスクの作成、保存をした後にタスク一覧へリダイレクト
      */
-    public function create(createTask $request)
+    public function create(int $id, createTask $request)
     {
+        // 現在のフォルダー
+        $current_folder = Folder::find($id);
         // タスクのインスタンス作成
         $task = new Task();
         // タイトル
         $task->title = $request->title;
         // 期限
         $task->due_date = $request->due_date;
-        // フォルダID
-        $task->folder_id = $request->folder_id;
-        // 作成したインスタンスをDBに保存
-        $task->save();
+        // タスクの保存
+        $current_folder->tasks()->save($task);
 
         return redirect()->route('tasks.index', [
-            'id' => $task->folder_id,
+            'id' => $current_folder->id,
         ]);
     }
 }
