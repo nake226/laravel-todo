@@ -25,7 +25,7 @@ class createTask extends FormRequest
     {
         return [
             'title' => 'required|max:100',
-            'due_date' => 'required',
+            'due_date' => 'required|date|after_or_equal:today',
         ];
     }
 
@@ -34,6 +34,17 @@ class createTask extends FormRequest
         return [
             'title' => 'タスク名',
             'due_date' => '期限',
+        ];
+    }
+
+    /**
+     * タスク作成時のみ適用する個別ルール
+     * 左辺にkey.ruleの形式で指定する
+     */
+    public function messages()
+    {
+        return [
+            'due_date.after_or_equal' => ':attribute には今日以降の日付を入力してください。',
         ];
     }
 }
