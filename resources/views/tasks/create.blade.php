@@ -24,7 +24,6 @@
               <div class="form-group">
                 <label for="title">タイトル</label>
                 <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}" />
-                <input type="hidden" class="form-control" name="folder_id" id="folder_id" value="{{ $folder_id }}" />
               </div>
               <div class="form-group">
                 <label for="due_date">期限</label>
