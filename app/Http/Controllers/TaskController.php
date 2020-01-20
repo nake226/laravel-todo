@@ -50,7 +50,7 @@ class TaskController extends Controller
         $task->title = $request->title;
         // 期限
         $task->due_date = $request->due_date;
-        // タスクの保存
+        // タスクの保存、tasks()はFolderクラスのメソッド
         $current_folder->tasks()->save($task);
 
         return redirect()->route('tasks.index', [
