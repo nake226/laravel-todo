@@ -62,7 +62,7 @@ class TaskController extends Controller
     /**
      * タスク編集画面への遷移
      */
-    public function showEditForm(int $task_id)
+    public function showEditForm(int $id, int $task_id)
     {
         $task = Task::find($task_id);
 
@@ -74,7 +74,7 @@ class TaskController extends Controller
     /**
      * タスク編集後、更新
      */
-    public function edit(int $task_id, EditTask $request)
+    public function edit(int $id, int $task_id, EditTask $request)
     {
         // 更新するタスク
         $task = Task::find($task_id);
