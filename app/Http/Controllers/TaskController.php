@@ -48,6 +48,8 @@ class TaskController extends Controller
         $task->title = $request->title;
         // 期限
         $task->due_date = $request->due_date;
+        // フォルダID
+        $task->folder_id = $request->folder_id;
         // 作成したインスタンスをDBに保存
         $task->save();
 
