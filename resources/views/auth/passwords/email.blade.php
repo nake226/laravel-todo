@@ -12,6 +12,13 @@
                 {{ session('status') }}
               </div>
             @endif
+            @if($errors->any())
+              <div class="alert alert-danger">
+                @foreach($errors->all() as $message)
+                  {{ $message }}
+                @endforeach
+              </div>
+            @endif
             <form action="{{ route('password.email') }}" method="POST">
               @csrf
               <div class="form-group">
