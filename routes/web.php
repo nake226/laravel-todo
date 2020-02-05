@@ -14,17 +14,22 @@
 Route::group(['middleware' => 'auth'], function () {
   // トップページ
   Route::get('/', 'HomeController@index')->name('home');
-  // タスク一覧
-  Route::get('/folders/{folder}/tasks', 'TaskController@index')->name('tasks.index');
+
   // フォルダ作成
   Route::get('/folders/create', 'FolderController@showCreateForm')->name('folders.create');
   Route::post('/folders/create', 'FolderController@create');
-  // タスク作成
-  Route::get('/folders/{folder}/tasks/create', 'TaskController@showCreateForm')->name('tasks.create');
-  Route::post('/folders/{folder}/tasks/create', 'TaskController@create');
-  // タスク編集
-  Route::get('/folders/{folder}/tasks/{task}/edit', 'TaskController@showEditForm')->name('tasks.edit');
-  Route::post('/folders/{folder}/tasks/{task}/edit', 'TaskController@edit');
+
+  // view,の後にスペースを入れると認可されない
+  Route::group(['middleware' => 'can:view,folder'], function() {
+    // タスク一覧
+    Route::get('/folders/{folder}/tasks', 'TaskController@index')->name('tasks.index');
+    // タスク作成
+    Route::get('/folders/{folder}/tasks/create', 'TaskController@showCreateForm')->name('tasks.create');
+    Route::post('/folders/{folder}/tasks/create', 'TaskController@create');
+    // タスク編集
+    Route::get('/folders/{folder}/tasks/{task}/edit', 'TaskController@showEditForm')->name('tasks.edit');
+    Route::post('/folders/{folder}/tasks/{task}/edit', 'TaskController@edit');
+  });
 });
 
 Auth::routes();
