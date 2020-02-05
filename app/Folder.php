@@ -9,6 +9,6 @@ class Folder extends Model
     // タスクとの関連づけ
     public function tasks()
     {
-        return $this->hasMany('App\task');
+        return $this->hasMany('App\Task');
     }
 }
