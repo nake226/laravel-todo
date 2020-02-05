@@ -10,20 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function index(int $id)
+    public function index(Folder $folder)
     {
         // フォルダーの取得
         $folders = Auth::user()->folders()->get();
 
-        // 選択中のフォルダー
-        $current_folder = Folder::find($id);
-
         // フォルダに紐づくタスクの取得
-        $tasks = $current_folder->tasks()->get();
+        $tasks = $folder->tasks()->get();
 
         return view('tasks/index', [
             'folders' => $folders,
-            'current_folder_id' => $current_folder->id,
+            'current_folder_id' => $folder->id,
             'tasks' => $tasks
         ]);
     }
@@ -31,20 +28,18 @@ class TaskController extends Controller
     /**
      * タスクの新規作成
      */
-    public function showCreateForm(int $id)
+    public function showCreateForm(Folder $folder)
     {
         return view('tasks/create', [
-            'folder_id' => $id
+            'folder_id' => $folder->id
         ]);
     }
 
     /**
      * タスクの作成、保存をした後にタスク一覧へリダイレクト
      */
-    public function create(int $id, CreateTask $request)
+    public function create(Folder $folder, CreateTask $request)
     {
-        // 現在のフォルダー
-        $current_folder = Folder::find($id);
         // タスクのインスタンス作成
         $task = new Task();
         // タイトル
@@ -52,19 +47,19 @@ class TaskController extends Controller
         // 期限
         $task->due_date = $request->due_date;
         // タスクの保存、tasks()はFolderクラスのメソッド
-        $current_folder->tasks()->save($task);
+        $folder->tasks()->save($task);
 
         return redirect()->route('tasks.index', [
-            'id' => $current_folder->id,
+            'id' => $folder->id,
         ]);
     }
 
     /**
      * タスク編集画面への遷移
      */
-    public function showEditForm(int $id, int $task_id)
+    public function showEditForm(Folder $folder, Task $task)
     {
-        $task = Task::find($task_id);
+        $this->checkRelation($folder, $task);
 
         return view('tasks/edit', [
             'task' => $task,
@@ -74,11 +69,9 @@ class TaskController extends Controller
     /**
      * タスク編集後、更新
      */
-    public function edit(int $id, int $task_id, EditTask $request)
+    public function edit(Folder $folder, Task $task, EditTask $request)
     {
-        // 更新するタスク
-        $task = Task::find($task_id);
-
+        $this->checkRelation($folder, $task);
         // タスクの保存
         $task->title = $request->title;
         $task->status = $request->status;
@@ -88,5 +81,18 @@ class TaskController extends Controller
         return redirect()->route('tasks.index', [
             'id' => $task->folder_id,
         ]);
+    }
+
+    /**
+     * フォルダとタスクのリレーションチェック
+     * @param Folder $folder
+     * @param Task $task
+     * @return void
+     */
+    private function checkRelation(Folder $folder, Task $task)
+    {
+        if ($folder->id !== $task->folder_id) {
+            abort(404);
+        }
     }
 }
